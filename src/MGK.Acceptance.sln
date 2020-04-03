@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29609.76
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MGK.Acceptance", "MGK.Acceptance\MGK.Acceptance.csproj", "{384A5A15-3BE3-4952-B57A-1360BA94AE90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MGK.Acceptance.Test", "..\test\MGK.Acceptance.Test\MGK.Acceptance.Test.csproj", "{08E520DA-5CC3-4F87-ABF2-5528EBEA05C1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{384A5A15-3BE3-4952-B57A-1360BA94AE90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{384A5A15-3BE3-4952-B57A-1360BA94AE90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{384A5A15-3BE3-4952-B57A-1360BA94AE90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{384A5A15-3BE3-4952-B57A-1360BA94AE90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08E520DA-5CC3-4F87-ABF2-5528EBEA05C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08E520DA-5CC3-4F87-ABF2-5528EBEA05C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08E520DA-5CC3-4F87-ABF2-5528EBEA05C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08E520DA-5CC3-4F87-ABF2-5528EBEA05C1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6ECC27BB-E70C-49BA-AF62-C87C39B9630D}
+	EndGlobalSection
+EndGlobal
