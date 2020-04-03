@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Matías Gabriel Katz</Authors>
+    <Company />
+	<Title>MGK.Acceptance</Title>
+    <Description>A library to manage basic acceptance criteria and error/warnings/info messages.</Description>
+	<Summary>A library to manage basic acceptance criteria and error/warnings/info messages.</Summary>
+    <Copyright>Copyright 2020 (c) Matías Gabriel Katz</Copyright>
+    <PackageTags>acceptance criteria ensure errors</PackageTags>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/mgkatz/MGK.Acceptance</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mgkatz/MGK.Acceptance</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
+	<Version>1.0.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MGK.Extensions" Version="1.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\AppMessages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AppMessages.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\AppMessages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppMessages.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources</CustomToolNamespace>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
