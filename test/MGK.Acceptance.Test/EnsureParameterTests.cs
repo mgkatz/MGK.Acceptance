@@ -9,6 +9,59 @@ namespace MGK.Acceptance.Test
 		private const string SpecificErrorMessage = "Specific message";
 		private const string ParamTestName = "ParamTest";
 
+		#region IsNotEmpty
+
+		[Test]
+		public void EnsureParameter_IsNotEmpty_WhenValidParameter_EndsOk()
+			=> Assert.DoesNotThrow(() => Ensure.Parameter.IsNotEmpty(Guid.NewGuid(), ParamTestName));
+
+		[Test]
+		public void EnsureParameter_IsNotEmpty_WhenInvalidParameter_ThrowsAnException()
+		{
+			var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotEmpty(Guid.Empty, ParamTestName));
+			Assert.True(exception.Message.StartsWith(Resources.AppMessages.ErrorParamEmpty, StringComparison.InvariantCultureIgnoreCase));
+		}
+
+		[TestCase(null)]
+		[TestCase("")]
+		[TestCase("          ")]
+		public void EnsureParameter_IsNotEmpty_WhenInvalidParameterName_ThrowsAnException(string paramName)
+		{
+			var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotEmpty(Guid.Empty, paramName));
+			Assert.True(exception.Message.StartsWith(Resources.AppMessages.ErrorParamNameNotProvided, StringComparison.InvariantCultureIgnoreCase));
+		}
+
+		[Test]
+		public void EnsureParameter_IsNotEmpty_WithSpecificMessage_WhenValidParameter_EndsOk()
+			=> Assert.DoesNotThrow(() => Ensure.Parameter.IsNotEmpty(Guid.NewGuid(), ParamTestName, SpecificErrorMessage));
+
+		[Test]
+		public void EnsureParameter_IsNotEmpty_WithSpecificMessage_WhenInvalidParameter_ThrowsAnException()
+		{
+			var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotEmpty(Guid.Empty, ParamTestName, SpecificErrorMessage));
+			Assert.True(exception.Message.StartsWith(SpecificErrorMessage, StringComparison.InvariantCultureIgnoreCase));
+		}
+
+		[TestCase(null)]
+		[TestCase("")]
+		[TestCase("          ")]
+		public void EnsureParameter_IsNotEmpty_WithSpecificMessage_WhenInvalidParameterName_ThrowsAnException(string paramName)
+		{
+			var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotEmpty(Guid.Empty, paramName, SpecificErrorMessage));
+			Assert.True(exception.Message.StartsWith(Resources.AppMessages.ErrorParamNameNotProvided, StringComparison.InvariantCultureIgnoreCase));
+		}
+
+		[TestCase(null)]
+		[TestCase("")]
+		[TestCase("          ")]
+		public void EnsureParameter_IsNotEmpty_WithSpecificMessage_WhenInvalidMessage_ThrowsAnException(string errorMessage)
+		{
+			var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotEmpty(Guid.Empty, ParamTestName, errorMessage));
+			Assert.True(exception.Message.StartsWith(Resources.AppMessages.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase));
+		}
+
+		#endregion
+
 		#region IsNotNull
 
 		[Test]
