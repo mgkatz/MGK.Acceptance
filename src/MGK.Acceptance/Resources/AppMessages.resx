@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ErrorEmpty" xml:space="preserve">
+    <value>The value cannot be empty.</value>
+  </data>
   <data name="ErrorMessageNotProvided" xml:space="preserve">
     <value>The error message was not provided.</value>
   </data>
@@ -128,6 +131,9 @@
   </data>
   <data name="ErrorNullNorEmptyNorWhiteSpace" xml:space="preserve">
     <value>The value cannot be null, empty or have only white spaces.</value>
+  </data>
+  <data name="ErrorParamEmpty" xml:space="preserve">
+    <value>The parameter cannot be empty.</value>
   </data>
   <data name="ErrorParamNameNotProvided" xml:space="preserve">
     <value>The name of the parameter was not provided.</value>

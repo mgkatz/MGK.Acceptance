@@ -61,6 +61,15 @@ namespace Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The value cannot be empty..
+        /// </summary>
+        public static string ErrorEmpty {
+            get {
+                return ResourceManager.GetString("ErrorEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The error message was not provided..
         /// </summary>
         public static string ErrorMessageNotProvided {
@@ -93,6 +102,15 @@ namespace Resources {
         public static string ErrorNullNorEmptyNorWhiteSpace {
             get {
                 return ResourceManager.GetString("ErrorNullNorEmptyNorWhiteSpace", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The parameter cannot be empty..
+        /// </summary>
+        public static string ErrorParamEmpty {
+            get {
+                return ResourceManager.GetString("ErrorParamEmpty", resourceCulture);
             }
         }
         

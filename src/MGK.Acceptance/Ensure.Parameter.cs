@@ -16,6 +16,23 @@ namespace MGK.Acceptance
 		public static class Parameter
 		{
 			/// <summary>
+			/// Ensure that a parameter is not empty, otherwise throws an argument exception.
+			/// </summary>
+			/// <param name="value">The parameter value.</param>
+			/// <param name="paramName">The parameter's name.</param>
+			public static void IsNotEmpty(Guid value, string paramName)
+				=> IsNotEmpty(value, paramName, Resources.AppMessages.ErrorParamEmpty);
+
+			/// <summary>
+			/// Ensure that a parameter is not empty, otherwise throws an argument exception with a specific message.
+			/// </summary>
+			/// <param name="value">The parameter value.</param>
+			/// <param name="paramName">The parameter's name.</param>
+			/// <param name="errorMessage">The specific error message.</param>
+			public static void IsNotEmpty(Guid value, string paramName, string errorMessage)
+				=> EvaluateParameter(value.IsEmpty(), paramName, errorMessage);
+
+			/// <summary>
 			/// Ensure that a parameter is not null, otherwise throws an argument null exception.
 			/// </summary>
 			/// <param name="value">The parameter value.</param>

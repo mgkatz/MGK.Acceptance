@@ -15,6 +15,39 @@ namespace MGK.Acceptance
 		public static class Value
 		{
 			/// <summary>
+			/// Ensure that a value is not empty, otherwise throws an exception.
+			/// </summary>
+			/// <param name="value">The value.</param>
+			public static void IsNotEmpty(Guid value)
+				=> IsNotEmpty<Exception>(value, Resources.AppMessages.ErrorEmpty);
+
+			/// <summary>
+			/// Ensure that a value is not empty, otherwise throws an exception with a specific message.
+			/// </summary>
+			/// <param name="value">The value.</param>
+			/// <param name="errorMessage">The error message to throw.</param>
+			public static void IsNotEmpty(Guid value, string errorMessage)
+				=> IsNotEmpty<Exception>(value, errorMessage);
+
+			/// <summary>
+			/// Ensure that a value is not empty, otherwise throws a specific exception.
+			/// </summary>
+			/// <typeparam name="T">The type of the specific exception.</typeparam>
+			/// <param name="value">The value.</param>
+			public static void IsNotEmpty<T>(Guid value)
+				where T : Exception
+					=> IsNotEmpty<T>(value, Resources.AppMessages.ErrorEmpty);
+
+			/// <summary>
+			/// Ensure that a value is not empty, otherwise throws an exception with a specific message.
+			/// </summary>
+			/// <param name="value">The value.</param>
+			/// <param name="errorMessage">The error message to throw.</param>
+			public static void IsNotEmpty<T>(Guid value, string errorMessage)
+				where T : Exception
+					=> EvaluateValue<T>(value.IsEmpty(), errorMessage);
+
+			/// <summary>
 			/// Ensure that a value is not null, otherwise throws an exception.
 			/// </summary>
 			/// <param name="value">The value.</param>

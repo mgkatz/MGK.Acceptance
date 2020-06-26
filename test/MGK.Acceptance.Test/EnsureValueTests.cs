@@ -8,6 +8,72 @@ namespace MGK.Acceptance.Test
 	{
 		private const string SpecificErrorMessage = "Specific message";
 
+		#region IsNotEmpty
+
+		[Test]
+		public void EnsureValue_IsNotEmpty_WhenValidValue_EndsOk()
+			=> Assert.DoesNotThrow(() => Ensure.Value.IsNotEmpty(Guid.NewGuid()));
+
+		[Test]
+		public void EnsureValue_IsNotEmpty_WhenInvalidValue_ThrowsAnException()
+		{
+			var exception = Assert.Throws<Exception>(() => Ensure.Value.IsNotEmpty(Guid.Empty));
+			Assert.AreEqual(Resources.AppMessages.ErrorEmpty, exception.Message);
+		}
+
+		[Test]
+		public void EnsureValue_IsNotEmpty_WithSpecificMessage_WhenValidValue_EndsOk()
+			=> Assert.DoesNotThrow(() => Ensure.Value.IsNotEmpty(Guid.NewGuid(), SpecificErrorMessage));
+
+		[Test]
+		public void EnsureValue_IsNotEmpty_WithSpecificMessage_WhenInvalidValue_ThrowsAnException()
+		{
+			var exception = Assert.Throws<Exception>(() => Ensure.Value.IsNotEmpty(Guid.Empty, SpecificErrorMessage));
+			Assert.AreEqual(SpecificErrorMessage, exception.Message);
+		}
+
+		[TestCase(null)]
+		[TestCase("")]
+		[TestCase("          ")]
+		public void EnsureValue_IsNotEmpty_WithSpecificMessage_WhenInvalidMessage_ThrowsAnException(string errorMessage)
+		{
+			var exception = Assert.Throws<ArgumentException>(() => Ensure.Value.IsNotEmpty(Guid.Empty, errorMessage));
+			Assert.True(exception.Message.StartsWith(Resources.AppMessages.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase));
+		}
+
+		[Test]
+		public void EnsureValue_IsNotEmpty_WithSpecificException_WhenValidValue_EndsOk()
+			=> Assert.DoesNotThrow(() => Ensure.Value.IsNotEmpty<TestException>(Guid.NewGuid()));
+
+		[Test]
+		public void EnsureValue_IsNotEmpty_WithSpecificException_WhenInvalidValue_ThrowsAnException()
+		{
+			var exception = Assert.Throws<TestException>(() => Ensure.Value.IsNotEmpty<TestException>(Guid.Empty));
+			Assert.AreEqual(Resources.AppMessages.ErrorEmpty, exception.Message);
+		}
+
+		[Test]
+		public void EnsureValue_IsNotEmpty_WithSpecificExceptionAndSpecificMessage_WhenValidValue_EndsOk()
+			=> Assert.DoesNotThrow(() => Ensure.Value.IsNotEmpty<TestException>(Guid.NewGuid(), SpecificErrorMessage));
+
+		[Test]
+		public void EnsureValue_IsNotEmpty_WithSpecificExceptionAndSpecificMessage_WhenInvalidValue_ThrowsAnException()
+		{
+			var exception = Assert.Throws<TestException>(() => Ensure.Value.IsNotEmpty<TestException>(Guid.Empty, SpecificErrorMessage));
+			Assert.AreEqual(SpecificErrorMessage, exception.Message);
+		}
+
+		[TestCase(null)]
+		[TestCase("")]
+		[TestCase("          ")]
+		public void EnsureValue_IsNotEmpty_WithSpecificExceptionAndSpecificMessage_WhenInvalidMessage_ThrowsAnException(string errorMessage)
+		{
+			var exception = Assert.Throws<ArgumentException>(() => Ensure.Value.IsNotEmpty<TestException>(Guid.Empty, errorMessage));
+			Assert.True(exception.Message.StartsWith(Resources.AppMessages.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase));
+		}
+
+		#endregion
+
 		#region IsNotNull
 
 		[Test]
