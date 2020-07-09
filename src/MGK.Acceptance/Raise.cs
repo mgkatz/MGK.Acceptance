@@ -23,6 +23,14 @@ namespace MGK.Acceptance
 				=> throw (T)Activator.CreateInstance(typeof(T), new object[] { errorMessage });
 
 			/// <summary>
+			/// Throw an exception in a generic way.
+			/// </summary>
+			/// <typeparam name="T">The type of the exception.</typeparam>
+			/// <param name="exceptionParams">The parameters of the exception to throw.</param>
+			public static void Generic<T>(params object[] exceptionParams) where T : Exception
+				=> throw (T)Activator.CreateInstance(typeof(T), exceptionParams);
+
+			/// <summary>
 			/// Throw a parameter exception.
 			/// </summary>
 			/// <param name="paramName">The name of the parameter.</param>
