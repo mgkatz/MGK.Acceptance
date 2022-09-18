@@ -1,50 +1,49 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Matías Gabriel Katz</Authors>
-    <Company />
-	<Title>MGK.Acceptance</Title>
+    <Title>MGK.Acceptance</Title>
+    <Version>1.1.0</Version>
     <Description>A library to manage basic acceptance criteria and error/warnings/info messages.</Description>
-	<Summary>A library to manage basic acceptance criteria and error/warnings/info messages.</Summary>
-    <Copyright>Copyright 2020 (c) Matías Gabriel Katz</Copyright>
-    <PackageTags>acceptance criteria ensure errors</PackageTags>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Copyright>Copyright 2020,2021,2022 (c) Matías Gabriel Katz</Copyright>
+    <PackageProjectUrl>https://www.nuget.org/packages/MGK.Extensions/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/mgkatz/MGK.Extensions</RepositoryUrl>
+    <PackageTags>acceptance criteria;ensure;errors</PackageTags>
+    <PackageReleaseNotes>Source code migrated from .NET Standard 2.0 to .NET 6.0.</PackageReleaseNotes>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-    <PackageProjectUrl>https://github.com/mgkatz/MGK.Acceptance</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/mgkatz/MGK.Acceptance</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-	<Version>1.0.1.3</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MGK.Extensions" Version="1.0.6.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Resources\AppMessages.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>AppMessages.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\AppMessages.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>AppMessages.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>Resources</CustomToolNamespace>
-    </EmbeddedResource>
-  </ItemGroup>
 
   <ItemGroup>
     <None Include="..\..\LICENSE.txt">
       <Pack>True</Pack>
-      <PackagePath></PackagePath>
+      <PackagePath>\</PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MGK.Extensions" Version="1.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\AcceptanceMessagesResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>AcceptanceMessagesResources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\AcceptanceMessagesResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AcceptanceMessagesResources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>AcceptanceResources</CustomToolNamespace>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
