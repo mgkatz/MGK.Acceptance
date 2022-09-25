@@ -308,5 +308,47 @@ public class EnsureValueTests
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
 	}
 
-	#endregion
+    #endregion
+
+    #region HasToComplyWith
+    [Test]
+    public void EnsureValue_HasToComplyWith_WhenValidParameters_EndsOk()
+        => Assert.DoesNotThrow(() => Ensure.Value.HasToComplyWith(() => 1 == 1, SpecificErrorMessage));
+
+    [Test]
+    public void EnsureValue_HasToComplyWith_WithSpecificArgumentException_WhenValidParameters_EndsOk()
+        => Assert.DoesNotThrow(() => Ensure.Value.HasToComplyWith<TestException>(() => 1 == 1, SpecificErrorMessage));
+
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("          ")]
+    public void EnsureValue_HasToComplyWith_WhenInvalidErrorMessage_ThrowsAnException(string errorMessage)
+    {
+        var exception = Assert.Throws<ArgumentException>(() => Ensure.Value.HasToComplyWith(() => 1 == 1, errorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
+
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("          ")]
+    public void EnsureValue_HasToComplyWith_WithSpecificArgumentException_WhenInvalidErrorMessge_ThrowsAnException(string errorMessage)
+    {
+        var exception = Assert.Throws<ArgumentException>(() => Ensure.Value.HasToComplyWith<TestArgumentException>(() => 1 == 1, errorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
+
+    [Test]
+    public void EnsureValue_HasToComplyWith_WhenInvalidPredicate_ThrowsAnException()
+    {
+        var exception = Assert.Throws<ArgumentNullException>(() => Ensure.Value.HasToComplyWith(null, SpecificErrorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorCustomEvaluationPredicate, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
+
+    [Test]
+    public void EnsureValue_HasToComplyWith_WithSpecificArgumentException_WhenInvalidPredicate_ThrowsAnException()
+    {
+        var exception = Assert.Throws<ArgumentNullException>(() => Ensure.Value.HasToComplyWith<TestArgumentException>(null, SpecificErrorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorCustomEvaluationPredicate, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
+    #endregion
 }

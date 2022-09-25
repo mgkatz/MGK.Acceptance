@@ -184,6 +184,38 @@ public static partial class Ensure
 			where T : Exception
 				=> EvaluateValue<T>(value.IsNullOrEmptyOrWhiteSpace(), errorMessage);
 
+        /// <summary>
+        /// A custom validation can be implemented through a simple function that returns a boolean value. If the function returns false it will throw an exception.
+        /// </summary>
+		/// <param name="predicate">The function to evaluate.</param>
+		/// <param name="errorMessage">The error message to show in case the function returns false.</param>
+        public static void HasToComplyWith(Func<bool> predicate, string errorMessage)
+			=> HasToComplyWith<Exception>(predicate, errorMessage);
+
+		/// <summary>
+		/// A custom validation can be implemented through a simple function that returns a boolean value. If the function returns false it will throw the expected exception.
+		/// </summary>
+		/// <typeparam name="T">The expected exception.</typeparam>
+		/// <param name="predicate">The function to evaluate.</param>
+		/// <param name="errorMessage">The error message to show in case the function returns false.</param>
+		public static void HasToComplyWith<T>(Func<bool> predicate, string errorMessage)
+            where T : Exception
+        {
+            if (predicate is null)
+			{
+				Raise.Error.Parameter(
+					nameof(predicate),
+					AcceptanceResources.AcceptanceMessagesResources.ErrorCustomEvaluationPredicate,
+					ParameterErrorType.Null);
+			}
+
+            ValidateErrorMessage(errorMessage);
+
+			if (predicate()) return;
+
+            Raise.Error.Specific<T>(errorMessage);
+        }
+
 		/// <summary>
 		/// Validate and evaluate a value and raise the proper exception if applicable.
 		/// </summary>
@@ -195,7 +227,7 @@ public static partial class Ensure
 			if (isValueObjectNotValid)
 			{
 				ValidateErrorMessage(errorMessage);
-				Raise.Error.Generic<T>(errorMessage);
+				Raise.Error.Specific<T>(errorMessage);
 			}
 		}
 	}

@@ -241,4 +241,64 @@ public class EnsureParameterTests
 	}
 
 	#endregion
+
+	#region HasToComplyWith
+	[Test]
+	public void EnsureParameter_HasToComplyWith_WhenValidParameters_EndsOk()
+        => Assert.DoesNotThrow(() => Ensure.Parameter.HasToComplyWith(() => 1 == 1, ParamTestName, SpecificErrorMessage));
+
+    [Test]
+    public void EnsureParameter_HasToComplyWith_WithSpecificArgumentException_WhenValidParameters_EndsOk()
+        => Assert.DoesNotThrow(() => Ensure.Parameter.HasToComplyWith<TestArgumentException>(() => 1 == 1, ParamTestName, SpecificErrorMessage));
+
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("          ")]
+    public void EnsureParameter_HasToComplyWith_WhenInvalidParameterName_ThrowsAnException(string paramName)
+    {
+        var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.HasToComplyWith(() => 1 == 1, paramName, SpecificErrorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorParamNameNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
+
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("          ")]
+    public void EnsureParameter_HasToComplyWith_WithSpecificArgumentException_WhenInvalidParameterName_ThrowsAnException(string paramName)
+    {
+        var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.HasToComplyWith<TestArgumentException>(() => 1 == 1, paramName, SpecificErrorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorParamNameNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
+
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("          ")]
+    public void EnsureParameter_HasToComplyWith_WhenInvalidErrorMessage_ThrowsAnException(string errorMessage)
+    {
+        var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.HasToComplyWith(() => 1 == 1, ParamTestName, errorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
+
+    [TestCase(null)]
+    [TestCase("")]
+    [TestCase("          ")]
+    public void EnsureParameter_HasToComplyWith_WithSpecificArgumentException_WhenInvalidErrorMessge_ThrowsAnException(string errorMessage)
+    {
+        var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.HasToComplyWith<TestArgumentException>(() => 1 == 1, ParamTestName, errorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
+
+    [Test]
+    public void EnsureParameter_HasToComplyWith_WhenInvalidPredicate_ThrowsAnException()
+    {
+        var exception = Assert.Throws<ArgumentNullException>(() => Ensure.Parameter.HasToComplyWith(null, ParamTestName, SpecificErrorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorCustomEvaluationPredicate, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
+
+    [Test]
+    public void EnsureParameter_HasToComplyWith_WithSpecificArgumentException_WhenInvalidPredicate_ThrowsAnException()
+    {
+        var exception = Assert.Throws<ArgumentNullException>(() => Ensure.Parameter.HasToComplyWith<TestArgumentException>(null, ParamTestName, SpecificErrorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorCustomEvaluationPredicate, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
+    #endregion
 }

@@ -95,6 +95,39 @@ public static partial class Ensure
 		public static void IsNotNullNorEmptyNorWhiteSpace(string value, string paramName, string errorMessage)
 			=> EvaluateParameter(value.IsNullOrEmptyOrWhiteSpace(), paramName, errorMessage);
 
+        /// <summary>
+        /// A custom validation can be implemented through a simple function that returns a boolean value. If the function returns false it will throw an exception.
+        /// </summary>
+		/// <param name="predicate">The function to evaluate.</param>
+		/// <param name="errorMessage">The error message to show in case the function returns false.</param>
+        public static void HasToComplyWith(Func<bool> predicate, string paramName, string errorMessage)
+            => HasToComplyWith<ArgumentException>(predicate, paramName, errorMessage);
+
+        /// <summary>
+        /// A custom validation can be implemented through a simple function that returns a boolean value. If the function returns false it will throw the expected exception.
+        /// </summary>
+        /// <typeparam name="T">The expected exception.</typeparam>
+        /// <param name="predicate">The function to evaluate.</param>
+        /// <param name="errorMessage">The error message to show in case the function returns false.</param>
+        public static void HasToComplyWith<T>(Func<bool> predicate, string paramName, string errorMessage)
+            where T : ArgumentException
+		{
+			if (predicate is null)
+			{
+				Raise.Error.Parameter(
+					nameof(predicate),
+					AcceptanceResources.AcceptanceMessagesResources.ErrorCustomEvaluationPredicate,
+					ParameterErrorType.Null);
+			}
+
+            ValidateErrorMessage(errorMessage);
+            ValidateParamName(paramName);
+
+			if (predicate()) return;
+
+			Raise.Error.Parameter<T>(paramName, errorMessage);
+		}
+
 		/// <summary>
 		/// Validate and evaluate a parameter and raise the proper exception if applicable.
 		/// </summary>

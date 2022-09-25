@@ -61,6 +61,15 @@ namespace AcceptanceResources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The predicate of the custom evaluation cannot be null..
+        /// </summary>
+        public static string ErrorCustomEvaluationPredicate {
+            get {
+                return ResourceManager.GetString("ErrorCustomEvaluationPredicate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The value cannot be empty..
         /// </summary>
         public static string ErrorEmpty {
