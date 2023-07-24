@@ -1,27 +1,43 @@
+using System.Linq;
+
 namespace MGK.Acceptance.Test;
 
 public class EnsureValueTests
 {
 	private const string SpecificErrorMessage = "Specific message";
 
-	#region IsNotEmpty
+    #region IsNotEmpty
 
-	[Test]
-	public void EnsureValue_IsNotEmpty_WhenValidValue_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Value.IsNotEmpty(Guid.NewGuid()));
+    [Test]
+    public void EnsureValue_IsNotEmpty_WhenValidValue_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            var testValue = Guid.NewGuid();
+            Guid returnedValue = Ensure.Value.IsNotEmpty(testValue);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+        });
+    }
 
-	[Test]
+    [Test]
 	public void EnsureValue_IsNotEmpty_WhenInvalidValue_ThrowsAnException()
 	{
 		var exception = Assert.Throws<Exception>(() => Ensure.Value.IsNotEmpty(Guid.Empty));
 		Assert.That(exception.Message, Is.EqualTo(AcceptanceResources.AcceptanceMessagesResources.ErrorEmpty));
 	}
 
-	[Test]
-	public void EnsureValue_IsNotEmpty_WithSpecificMessage_WhenValidValue_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Value.IsNotEmpty(Guid.NewGuid(), SpecificErrorMessage));
+    [Test]
+    public void EnsureValue_IsNotEmpty_WithSpecificMessage_WhenValidValue_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            var testValue = Guid.NewGuid();
+            Guid returnedValue = Ensure.Value.IsNotEmpty(testValue, SpecificErrorMessage);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+        });
+    }
 
-	[Test]
+    [Test]
 	public void EnsureValue_IsNotEmpty_WithSpecificMessage_WhenInvalidValue_ThrowsAnException()
 	{
 		var exception = Assert.Throws<Exception>(() => Ensure.Value.IsNotEmpty(Guid.Empty, SpecificErrorMessage));
@@ -37,22 +53,36 @@ public class EnsureValueTests
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
 	}
 
-	[Test]
-	public void EnsureValue_IsNotEmpty_WithSpecificException_WhenValidValue_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Value.IsNotEmpty<TestException>(Guid.NewGuid()));
+    [Test]
+    public void EnsureValue_IsNotEmpty_WithSpecificException_WhenValidValue_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            var testValue = Guid.NewGuid();
+            Guid returnedValue = Ensure.Value.IsNotEmpty<TestException>(testValue);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+        });
+    }
 
-	[Test]
+    [Test]
 	public void EnsureValue_IsNotEmpty_WithSpecificException_WhenInvalidValue_ThrowsAnException()
 	{
 		var exception = Assert.Throws<TestException>(() => Ensure.Value.IsNotEmpty<TestException>(Guid.Empty));
 		Assert.That(exception.Message, Is.EqualTo(AcceptanceResources.AcceptanceMessagesResources.ErrorEmpty));
 	}
 
-	[Test]
-	public void EnsureValue_IsNotEmpty_WithSpecificExceptionAndSpecificMessage_WhenValidValue_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Value.IsNotEmpty<TestException>(Guid.NewGuid(), SpecificErrorMessage));
+    [Test]
+    public void EnsureValue_IsNotEmpty_WithSpecificExceptionAndSpecificMessage_WhenValidValue_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            var testValue = Guid.NewGuid();
+            Guid returnedValue = Ensure.Value.IsNotEmpty<TestException>(testValue, SpecificErrorMessage);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+        });
+    }
 
-	[Test]
+    [Test]
 	public void EnsureValue_IsNotEmpty_WithSpecificExceptionAndSpecificMessage_WhenInvalidValue_ThrowsAnException()
 	{
 		var exception = Assert.Throws<TestException>(() => Ensure.Value.IsNotEmpty<TestException>(Guid.Empty, SpecificErrorMessage));
@@ -68,81 +98,151 @@ public class EnsureValueTests
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
 	}
 
-	#endregion
+    #endregion
 
-	#region IsNotNull
+    #region IsNotNull
 
-	[Test]
-	public void EnsureValue_IsNotNull_WhenValidValue_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Value.IsNotNull(1));
+    [Test]
+    public void EnsureValue_IsNotNull_WhenValidValue_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            object testValue = 1;
+            object returnedValue = Ensure.Value.IsNotNullObj(testValue);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
 
-	[Test]
+            DateTime? genericRestValue = DateTime.Now;
+            DateTime? genericReturnedValue = Ensure.Value.IsNotNull(genericRestValue);
+            Assert.That(genericReturnedValue, Is.EqualTo(genericRestValue));
+        });
+    }
+
+    [Test]
 	public void EnsureValue_IsNotNull_WhenInvalidValue_ThrowsAnException()
 	{
-		var exception = Assert.Throws<Exception>(() => Ensure.Value.IsNotNull(null));
+		var exception = Assert.Throws<Exception>(() => Ensure.Value.IsNotNullObj(null));
 		Assert.That(exception.Message, Is.EqualTo(AcceptanceResources.AcceptanceMessagesResources.ErrorNull));
-	}
 
-	[Test]
-	public void EnsureValue_IsNotNull_WithSpecificMessage_WhenValidValue_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Value.IsNotNull(1, SpecificErrorMessage));
+        exception = Assert.Throws<Exception>(() => Ensure.Value.IsNotNull<DateTime?>(null));
+        Assert.That(exception.Message, Is.EqualTo(AcceptanceResources.AcceptanceMessagesResources.ErrorNull));
+    }
 
-	[Test]
+    [Test]
+    public void EnsureValue_IsNotNull_WithSpecificMessage_WhenValidValue_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            object testValue = 1;
+            object returnedValue = Ensure.Value.IsNotNullObj(testValue, SpecificErrorMessage);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+
+            DateTime? genericRestValue = DateTime.Now;
+            DateTime? genericReturnedValue = Ensure.Value.IsNotNull(genericRestValue, SpecificErrorMessage);
+            Assert.That(genericReturnedValue, Is.EqualTo(genericRestValue));
+        });
+    }
+
+    [Test]
 	public void EnsureValue_IsNotNull_WithSpecificMessage_WhenInvalidValue_ThrowsAnException()
 	{
-		var exception = Assert.Throws<Exception>(() => Ensure.Value.IsNotNull(null, SpecificErrorMessage));
+		var exception = Assert.Throws<Exception>(() => Ensure.Value.IsNotNullObj(null, SpecificErrorMessage));
 		Assert.That(exception.Message, Is.EqualTo(SpecificErrorMessage));
-	}
 
-	[TestCase(null)]
+        exception = Assert.Throws<Exception>(() => Ensure.Value.IsNotNull<DateTime?>(null, SpecificErrorMessage));
+        Assert.That(exception.Message, Is.EqualTo(SpecificErrorMessage));
+    }
+
+    [TestCase(null)]
 	[TestCase("")]
 	[TestCase("          ")]
 	public void EnsureValue_IsNotNull_WithSpecificMessage_WhenInvalidMessage_ThrowsAnException(string errorMessage)
 	{
-		var exception = Assert.Throws<ArgumentException>(() => Ensure.Value.IsNotNull(null, errorMessage));
+		var exception = Assert.Throws<ArgumentException>(() => Ensure.Value.IsNotNullObj(null, errorMessage));
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
-	}
 
-	[Test]
-	public void EnsureValue_IsNotNull_WithSpecificException_WhenValidValue_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Value.IsNotNull<TestException>(1));
+        exception = Assert.Throws<ArgumentException>(() => Ensure.Value.IsNotNull<DateTime?>(null, errorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
 
-	[Test]
+    [Test]
+    public void EnsureValue_IsNotNull_WithSpecificException_WhenValidValue_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            object testValue = 1;
+            object returnedValue = Ensure.Value.IsNotNullObj<TestException>(testValue);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+
+            DateTime? genericRestValue = DateTime.Now;
+            DateTime? genericReturnedValue = Ensure.Value.IsNotNull<TestException, DateTime?>(genericRestValue);
+            Assert.That(genericReturnedValue, Is.EqualTo(genericRestValue));
+        });
+    }
+
+    [Test]
 	public void EnsureValue_IsNotNull_WithSpecificException_WhenInvalidValue_ThrowsAnException()
 	{
-		var exception = Assert.Throws<TestException>(() => Ensure.Value.IsNotNull<TestException>(null));
+		var exception = Assert.Throws<TestException>(() => Ensure.Value.IsNotNullObj<TestException>(null));
 		Assert.That(exception.Message, Is.EqualTo(AcceptanceResources.AcceptanceMessagesResources.ErrorNull));
-	}
 
-	[Test]
-	public void EnsureValue_IsNotNull_WithSpecificExceptionAndSpecificMessage_WhenValidValue_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Value.IsNotNull<TestException>(1, SpecificErrorMessage));
+        exception = Assert.Throws<TestException>(() => Ensure.Value.IsNotNull<TestException, DateTime?>(null));
+        Assert.That(exception.Message, Is.EqualTo(AcceptanceResources.AcceptanceMessagesResources.ErrorNull));
+    }
 
-	[Test]
+    [Test]
+    public void EnsureValue_IsNotNull_WithSpecificExceptionAndSpecificMessage_WhenValidValue_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            object testValue = 1;
+            object returnedValue = Ensure.Value.IsNotNullObj<TestException>(testValue, SpecificErrorMessage);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+
+            DateTime? genericRestValue = DateTime.Now;
+            DateTime? genericReturnedValue = Ensure.Value.IsNotNull<TestException, DateTime?>(genericRestValue, SpecificErrorMessage);
+            Assert.That(genericReturnedValue, Is.EqualTo(genericRestValue));
+        });
+    }
+
+    [Test]
 	public void EnsureValue_IsNotNull_WithSpecificExceptionAndSpecificMessage_WhenInvalidValue_ThrowsAnException()
 	{
-		var exception = Assert.Throws<TestException>(() => Ensure.Value.IsNotNull<TestException>(null, SpecificErrorMessage));
+		var exception = Assert.Throws<TestException>(() => Ensure.Value.IsNotNullObj<TestException>(null, SpecificErrorMessage));
 		Assert.That(exception.Message, Is.EqualTo(SpecificErrorMessage));
-	}
 
-	[TestCase(null)]
+        exception = Assert.Throws<TestException>(() => Ensure.Value.IsNotNull<TestException, DateTime?>(null, SpecificErrorMessage));
+        Assert.That(exception.Message, Is.EqualTo(SpecificErrorMessage));
+    }
+
+    [TestCase(null)]
 	[TestCase("")]
 	[TestCase("          ")]
 	public void EnsureValue_IsNotNull_WithSpecificExceptionAndSpecificMessage_WhenInvalidMessage_ThrowsAnException(string errorMessage)
 	{
-		var exception = Assert.Throws<ArgumentException>(() => Ensure.Value.IsNotNull<TestException>(null, errorMessage));
+		var exception = Assert.Throws<ArgumentException>(() => Ensure.Value.IsNotNullObj<TestException>(null, errorMessage));
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
-	}
 
-	#endregion
+        exception = Assert.Throws<ArgumentException>(() => Ensure.Value.IsNotNull<TestException, DateTime?>(null, errorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
 
-	#region IsNotNullNorEmpty
+    #endregion
 
-	[Test]
+    #region IsNotNullNorEmpty
+
+    [Test]
 	public void EnsureValue_IsNotNullNorEmpty_WhenValidValue_EndsOk()
 	{
-		Assert.DoesNotThrow(() => Ensure.Value.IsNotNullNorEmpty("qwerty"));
-		Assert.DoesNotThrow(() => Ensure.Value.IsNotNullNorEmpty(new int[] { 1, 2, 3 }));
+        Assert.DoesNotThrow(() =>
+        {
+            const string testValue = "qwerty";
+            string returnedValue = Ensure.Value.IsNotNullNorEmpty(testValue);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+
+            var enumerableTestValue = new int[] { 1, 2, 3 };
+            IEnumerable<int> enumerableReturnedValue = Ensure.Value.IsNotNullNorEmpty(enumerableTestValue);
+            Assert.That(enumerableReturnedValue.SequenceEqual(enumerableTestValue), Is.True);
+        });
 	}
 
 	[TestCase(null, null)]
@@ -159,8 +259,16 @@ public class EnsureValueTests
 	[Test]
 	public void EnsureValue_IsNotNullNorEmpty_WithSpecificMessage_WhenValidValue_EndsOk()
 	{
-		Assert.DoesNotThrow(() => Ensure.Value.IsNotNullNorEmpty("qwerty", SpecificErrorMessage));
-		Assert.DoesNotThrow(() => Ensure.Value.IsNotNullNorEmpty(new int[] { 1, 2, 3 }, SpecificErrorMessage));
+        Assert.DoesNotThrow(() =>
+        {
+            const string testValue = "qwerty";
+            string returnedValue = Ensure.Value.IsNotNullNorEmpty(testValue, SpecificErrorMessage);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+
+            var enumerableTestValue = new int[] { 1, 2, 3 };
+            IEnumerable<int> enumerableReturnedValue = Ensure.Value.IsNotNullNorEmpty(enumerableTestValue, SpecificErrorMessage);
+            Assert.That(enumerableReturnedValue.SequenceEqual(enumerableTestValue), Is.True);
+        });
 	}
 
 	[TestCase(null, null)]
@@ -189,8 +297,16 @@ public class EnsureValueTests
 	[Test]
 	public void EnsureValue_IsNotNullNorEmpty_WithSpecificException_WhenValidValue_EndsOk()
 	{
-		Assert.DoesNotThrow(() => Ensure.Value.IsNotNullNorEmpty<TestException>("qwerty"));
-		Assert.DoesNotThrow(() => Ensure.Value.IsNotNullNorEmpty<TestException, int>(new int[] { 1, 2, 3 }));
+        Assert.DoesNotThrow(() =>
+        {
+            const string testValue = "qwerty";
+            string returnedValue = Ensure.Value.IsNotNullNorEmpty<TestException>(testValue);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+
+            var enumerableTestValue = new int[] { 1, 2, 3 };
+            IEnumerable<int> enumerableReturnedValue = Ensure.Value.IsNotNullNorEmpty<TestException, int>(enumerableTestValue);
+            Assert.That(enumerableReturnedValue.SequenceEqual(enumerableTestValue), Is.True);
+        });
 	}
 
 	[TestCase(null, null)]
@@ -207,8 +323,16 @@ public class EnsureValueTests
 	[Test]
 	public void EnsureValue_IsNotNullNorEmpty_WithSpecificExceptionAndSpecificMessage_WhenValidValue_EndsOk()
 	{
-		Assert.DoesNotThrow(() => Ensure.Value.IsNotNullNorEmpty<TestException>("qwerty", SpecificErrorMessage));
-		Assert.DoesNotThrow(() => Ensure.Value.IsNotNullNorEmpty<TestException, int>(new int[] { 1, 2, 3 }, SpecificErrorMessage));
+        Assert.DoesNotThrow(() =>
+        {
+            const string testValue = "qwerty";
+            string returnedValue = Ensure.Value.IsNotNullNorEmpty<TestException>(testValue, SpecificErrorMessage);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+
+            var enumerableTestValue = new int[] { 1, 2, 3 };
+            IEnumerable<int> enumerableReturnedValue = Ensure.Value.IsNotNullNorEmpty<TestException, int>(enumerableTestValue, SpecificErrorMessage);
+            Assert.That(enumerableReturnedValue.SequenceEqual(enumerableTestValue), Is.True);
+        });
 	}
 
 	[TestCase(null, null)]
@@ -234,15 +358,22 @@ public class EnsureValueTests
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
 	}
 
-	#endregion
+    #endregion
 
-	#region IsNotNullNorEmptyNorWhiteSpace
+    #region IsNotNullNorEmptyNorWhiteSpace
 
-	[Test]
-	public void EnsureValue_IsNotNullNorEmptyNorWhiteSpace_WhenValidValue_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Value.IsNotNullNorEmptyNorWhiteSpace("qwerty"));
+    [Test]
+    public void EnsureValue_IsNotNullNorEmptyNorWhiteSpace_WhenValidValue_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            const string testValue = "qwerty";
+            string returnedValue = Ensure.Value.IsNotNullNorEmptyNorWhiteSpace(testValue);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+        });
+    }
 
-	[TestCase(null)]
+    [TestCase(null)]
 	[TestCase("")]
 	[TestCase("          ")]
 	public void EnsureValue_IsNotNullNorEmptyNorWhiteSpace_WhenInvalidValue_ThrowsAnException(string text)
@@ -251,11 +382,18 @@ public class EnsureValueTests
 		Assert.That(exception.Message, Is.EqualTo(AcceptanceResources.AcceptanceMessagesResources.ErrorNullNorEmptyNorWhiteSpace));
 	}
 
-	[Test]
-	public void EnsureValue_IsNotNullNorEmptyNorWhiteSpace_WithSpecificMessage_WhenValidValue_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Value.IsNotNullNorEmptyNorWhiteSpace("qwerty", SpecificErrorMessage));
+    [Test]
+    public void EnsureValue_IsNotNullNorEmptyNorWhiteSpace_WithSpecificMessage_WhenValidValue_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            const string testValue = "qwerty";
+            string returnedValue = Ensure.Value.IsNotNullNorEmptyNorWhiteSpace(testValue, SpecificErrorMessage);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+        });
+    }
 
-	[TestCase(null)]
+    [TestCase(null)]
 	[TestCase("")]
 	[TestCase("          ")]
 	public void EnsureValue_IsNotNullNorEmptyNorWhiteSpace_WithSpecificMessage_WhenInvalidValue_ThrowsAnException(string text)
@@ -273,11 +411,18 @@ public class EnsureValueTests
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
 	}
 
-	[Test]
-	public void EnsureValue_IsNotNullNorEmptyNorWhiteSpace_WithSpecificException_WhenValidValue_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Value.IsNotNullNorEmptyNorWhiteSpace<TestException>("qwerty"));
+    [Test]
+    public void EnsureValue_IsNotNullNorEmptyNorWhiteSpace_WithSpecificException_WhenValidValue_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            const string testValue = "qwerty";
+            string returnedValue = Ensure.Value.IsNotNullNorEmptyNorWhiteSpace<TestException>(testValue);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+        });
+    }
 
-	[TestCase(null)]
+    [TestCase(null)]
 	[TestCase("")]
 	[TestCase("          ")]
 	public void EnsureValue_IsNotNullNorEmptyNorWhiteSpace_WithSpecificException_WhenInvalidValue_ThrowsAnException(string text)
@@ -286,11 +431,18 @@ public class EnsureValueTests
 		Assert.That(exception.Message, Is.EqualTo(AcceptanceResources.AcceptanceMessagesResources.ErrorNullNorEmptyNorWhiteSpace));
 	}
 
-	[Test]
-	public void EnsureValue_IsNotNullNorEmptyNorWhiteSpace_WithSpecificExceptionAndSpecificMessage_WhenValidValue_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Value.IsNotNullNorEmptyNorWhiteSpace<TestException>("qwerty", SpecificErrorMessage));
+    [Test]
+    public void EnsureValue_IsNotNullNorEmptyNorWhiteSpace_WithSpecificExceptionAndSpecificMessage_WhenValidValue_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            const string testValue = "qwerty";
+            string returnedValue = Ensure.Value.IsNotNullNorEmptyNorWhiteSpace<TestException>(testValue, SpecificErrorMessage);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+        });
+    }
 
-	[TestCase(null)]
+    [TestCase(null)]
 	[TestCase("")]
 	[TestCase("          ")]
 	public void EnsureValue_IsNotNullNorEmptyNorWhiteSpace_WithSpecificExceptionAndSpecificMessage_WhenInvalidValue_ThrowsAnException(string text)

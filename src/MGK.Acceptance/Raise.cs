@@ -20,7 +20,7 @@ public static class Raise
 			=> throw (T)Activator.CreateInstance(typeof(T), new object[] { errorMessage });
 
         /// <summary>
-        /// Throws a specific exception.
+        /// Throws an exception allowing params.
         /// </summary>
         /// <typeparam name="T">The type of the specific exception.</typeparam>
         /// <param name="exceptionParams">The parameters of the specific exception to throw.</param>

@@ -1,17 +1,26 @@
-﻿namespace MGK.Acceptance.Test;
+﻿using System.Linq;
+
+namespace MGK.Acceptance.Test;
 
 public class EnsureParameterTests
 {
 	private const string SpecificErrorMessage = "Specific message";
 	private const string ParamTestName = "ParamTest";
 
-	#region IsNotEmpty
+    #region IsNotEmpty
 
-	[Test]
-	public void EnsureParameter_IsNotEmpty_WhenValidParameter_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Parameter.IsNotEmpty(Guid.NewGuid(), ParamTestName));
+    [Test]
+    public void EnsureParameter_IsNotEmpty_WhenValidParameter_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+			var testValue = Guid.NewGuid();
+            Guid returnedValue = Ensure.Parameter.IsNotEmpty(testValue, ParamTestName);
+			Assert.That(returnedValue, Is.EqualTo(testValue));
+        });
+    }
 
-	[Test]
+    [Test]
 	public void EnsureParameter_IsNotEmpty_WhenInvalidParameter_ThrowsAnException()
 	{
 		var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotEmpty(Guid.Empty, ParamTestName));
@@ -27,11 +36,18 @@ public class EnsureParameterTests
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorParamNameNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
 	}
 
-	[Test]
-	public void EnsureParameter_IsNotEmpty_WithSpecificMessage_WhenValidParameter_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Parameter.IsNotEmpty(Guid.NewGuid(), ParamTestName, SpecificErrorMessage));
+    [Test]
+    public void EnsureParameter_IsNotEmpty_WithSpecificMessage_WhenValidParameter_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+		{
+            var testValue = Guid.NewGuid();
+            Guid returnedValue = Ensure.Parameter.IsNotEmpty(testValue, ParamTestName, SpecificErrorMessage);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+        });
+    }
 
-	[Test]
+    [Test]
 	public void EnsureParameter_IsNotEmpty_WithSpecificMessage_WhenInvalidParameter_ThrowsAnException()
 	{
 		var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotEmpty(Guid.Empty, ParamTestName, SpecificErrorMessage));
@@ -56,68 +72,113 @@ public class EnsureParameterTests
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
 	}
 
-	#endregion
+    #endregion
 
-	#region IsNotNull
+    #region IsNotNull
 
-	[Test]
-	public void EnsureParameter_IsNotNull_WhenValidParameter_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Parameter.IsNotNull(1, ParamTestName));
+    [Test]
+    public void EnsureParameter_IsNotNull_WhenValidParameter_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            object testValue = 1;
+            object returnedValue = Ensure.Parameter.IsNotNullObj(testValue, ParamTestName);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
 
-	[Test]
+            DateTime? genericRestValue = DateTime.Now;
+            DateTime? genericReturnedValue = Ensure.Parameter.IsNotNull(genericRestValue, ParamTestName);
+            Assert.That(genericReturnedValue, Is.EqualTo(genericRestValue));
+        });
+    }
+
+    [Test]
 	public void EnsureParameter_IsNotNull_WhenInvalidParameter_ThrowsAnException()
 	{
-		var exception = Assert.Throws<ArgumentNullException>(() => Ensure.Parameter.IsNotNull(null, ParamTestName));
+		var exception = Assert.Throws<ArgumentNullException>(() => Ensure.Parameter.IsNotNullObj(null, ParamTestName));
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorParamNull, StringComparison.InvariantCultureIgnoreCase), Is.True);
-	}
 
-	[TestCase(null)]
+        exception = Assert.Throws<ArgumentNullException>(() => Ensure.Parameter.IsNotNull<DateTime?>(null, ParamTestName));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorParamNull, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
+
+    [TestCase(null)]
 	[TestCase("")]
 	[TestCase("          ")]
 	public void EnsureParameter_IsNotNull_WhenInvalidParameterName_ThrowsAnException(string paramName)
 	{
-		var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotNull(null, paramName));
+		var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotNullObj(null, paramName));
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorParamNameNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
-	}
 
-	[Test]
-	public void EnsureParameter_IsNotNull_WithSpecificMessage_WhenValidParameter_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Parameter.IsNotNull(1, ParamTestName, SpecificErrorMessage));
+        exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotNull<DateTime?>(null, paramName));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorParamNameNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
 
-	[Test]
+    [Test]
+    public void EnsureParameter_IsNotNull_WithSpecificMessage_WhenValidParameter_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            object testValue = 1;
+            object returnedValue = Ensure.Parameter.IsNotNullObj(1, ParamTestName, SpecificErrorMessage);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+
+            DateTime genericRestValue = DateTime.Now;
+            DateTime genericReturnedValue = Ensure.Parameter.IsNotNull(genericRestValue, ParamTestName, SpecificErrorMessage);
+            Assert.That(genericReturnedValue, Is.EqualTo(genericRestValue));
+        });
+    }
+
+    [Test]
 	public void EnsureParameter_IsNotNull_WithSpecificMessage_WhenInvalidParameter_ThrowsAnException()
 	{
-		var exception = Assert.Throws<ArgumentNullException>(() => Ensure.Parameter.IsNotNull(null, ParamTestName, SpecificErrorMessage));
+		var exception = Assert.Throws<ArgumentNullException>(() => Ensure.Parameter.IsNotNullObj(null, ParamTestName, SpecificErrorMessage));
 		Assert.That(exception.Message.StartsWith(SpecificErrorMessage, StringComparison.InvariantCultureIgnoreCase), Is.True);
-	}
 
-	[TestCase(null)]
+        exception = Assert.Throws<ArgumentNullException>(() => Ensure.Parameter.IsNotNull<DateTime?>(null, ParamTestName, SpecificErrorMessage));
+        Assert.That(exception.Message.StartsWith(SpecificErrorMessage, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
+
+    [TestCase(null)]
 	[TestCase("")]
 	[TestCase("          ")]
 	public void EnsureParameter_IsNotNull_WithSpecificMessage_WhenInvalidParameterName_ThrowsAnException(string paramName)
 	{
-		var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotNull(null, paramName, SpecificErrorMessage));
+		var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotNullObj(null, paramName, SpecificErrorMessage));
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorParamNameNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
-	}
 
-	[TestCase(null)]
+        exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotNull<DateTime?>(null, paramName, SpecificErrorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorParamNameNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
+
+    [TestCase(null)]
 	[TestCase("")]
 	[TestCase("          ")]
 	public void EnsureParameter_IsNotNull_WithSpecificMessage_WhenInvalidMessage_ThrowsAnException(string errorMessage)
 	{
-		var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotNull(null, ParamTestName, errorMessage));
+		var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotNullObj(null, ParamTestName, errorMessage));
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
-	}
 
-	#endregion
+        exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotNull<DateTime?>(null, ParamTestName, errorMessage));
+        Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
+    }
 
-	#region IsNotNullNorEmpty
+    #endregion
 
-	[Test]
+    #region IsNotNullNorEmpty
+
+    [Test]
 	public void EnsureParameter_IsNotNullNorEmpty_WhenValidParameter_EndsOk()
 	{
-		Assert.DoesNotThrow(() => Ensure.Parameter.IsNotNullNorEmpty("qwerty", ParamTestName));
-		Assert.DoesNotThrow(() => Ensure.Parameter.IsNotNullNorEmpty(new int[] { 1, 2, 3 }, ParamTestName));
+        Assert.DoesNotThrow(() =>
+        {
+            const string testValue = "qwerty";
+            string returnedValue = Ensure.Parameter.IsNotNullNorEmpty(testValue, ParamTestName);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+
+			var enumerableTestValue = new int[] { 1, 2, 3 };
+            IEnumerable<int> enumerableReturnedValue = Ensure.Parameter.IsNotNullNorEmpty(enumerableTestValue, ParamTestName);
+			Assert.That(enumerableReturnedValue.SequenceEqual(enumerableTestValue), Is.True);
+        });
 	}
 
 	[TestCase(null, null)]
@@ -146,8 +207,16 @@ public class EnsureParameterTests
 	[Test]
 	public void EnsureParameter_IsNotNullNorEmpty_WithSpecificMessage_WhenValidParameter_EndsOk()
 	{
-		Assert.DoesNotThrow(() => Ensure.Parameter.IsNotNullNorEmpty("qwerty", ParamTestName, SpecificErrorMessage));
-		Assert.DoesNotThrow(() => Ensure.Parameter.IsNotNullNorEmpty(new int[] { 1, 2, 3 }, ParamTestName, SpecificErrorMessage));
+        Assert.DoesNotThrow(() =>
+        {
+            const string testValue = "qwerty";
+            string returnedValue = Ensure.Parameter.IsNotNullNorEmpty(testValue, ParamTestName, SpecificErrorMessage);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+
+            var enumerableTestValue = new int[] { 1, 2, 3 };
+            IEnumerable<int> enumerableReturnedValue = Ensure.Parameter.IsNotNullNorEmpty(enumerableTestValue, ParamTestName, SpecificErrorMessage);
+            Assert.That(enumerableReturnedValue.SequenceEqual(enumerableTestValue), Is.True);
+        });
 	}
 
 	[TestCase(null, null)]
@@ -185,15 +254,22 @@ public class EnsureParameterTests
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorMessageNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
 	}
 
-	#endregion
+    #endregion
 
-	#region IsNotNullNorEmptyNorWhiteSpace
+    #region IsNotNullNorEmptyNorWhiteSpace
 
-	[Test]
-	public void EnsureParameter_IsNotNullNorEmptyNorWhiteSpace_WhenValidParameter_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Parameter.IsNotNullNorEmptyNorWhiteSpace("qwerty", ParamTestName));
+    [Test]
+    public void EnsureParameter_IsNotNullNorEmptyNorWhiteSpace_WhenValidParameter_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            const string testValue = "qwerty";
+            string returnedValue = Ensure.Parameter.IsNotNullNorEmptyNorWhiteSpace(testValue, ParamTestName);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+        });
+    }
 
-	[TestCase(null)]
+    [TestCase(null)]
 	[TestCase("")]
 	[TestCase("          ")]
 	public void EnsureParameter_IsNotNullNorEmptyNorWhiteSpace_WhenInvalidParameter_ThrowsAnException(string text)
@@ -211,11 +287,18 @@ public class EnsureParameterTests
 		Assert.That(exception.Message.StartsWith(AcceptanceResources.AcceptanceMessagesResources.ErrorParamNameNotProvided, StringComparison.InvariantCultureIgnoreCase), Is.True);
 	}
 
-	[Test]
-	public void EnsureParameter_IsNotNullNorEmptyNorWhiteSpace_WithSpecificMessage_WhenValidParameter_EndsOk()
-		=> Assert.DoesNotThrow(() => Ensure.Parameter.IsNotNullNorEmptyNorWhiteSpace("qwerty", ParamTestName, SpecificErrorMessage));
+    [Test]
+    public void EnsureParameter_IsNotNullNorEmptyNorWhiteSpace_WithSpecificMessage_WhenValidParameter_EndsOk()
+    {
+        Assert.DoesNotThrow(() =>
+        {
+            const string testValue = "qwerty";
+            string returnedValue = Ensure.Parameter.IsNotNullNorEmptyNorWhiteSpace(testValue, ParamTestName, SpecificErrorMessage);
+            Assert.That(returnedValue, Is.EqualTo(testValue));
+        });
+    }
 
-	[Test]
+    [Test]
 	public void EnsureParameter_IsNotNullNorEmptyNorWhiteSpace_WithSpecificMessage_WhenInvalidParameter_ThrowsAnException()
 	{
 		var exception = Assert.Throws<ArgumentException>(() => Ensure.Parameter.IsNotNullNorEmptyNorWhiteSpace(null, ParamTestName, SpecificErrorMessage));

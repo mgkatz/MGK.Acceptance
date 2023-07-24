@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <Authors>Matías Gabriel Katz</Authors>
     <Title>MGK.Acceptance</Title>
-    <Version>1.1.3</Version>
+    <Version>1.2.0</Version>
     <Description>A library to manage basic acceptance criteria and error/warnings/info messages.</Description>
     <Copyright>Copyright 2020,2021,2022 (c) Matías Gabriel Katz</Copyright>
     <PackageProjectUrl>https://www.nuget.org/packages/MGK.Extensions/</PackageProjectUrl>
@@ -17,10 +17,15 @@
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
     <None Include="..\..\LICENSE.txt">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>

@@ -1,4 +1,6 @@
-﻿namespace MGK.Acceptance;
+﻿using static MGK.Acceptance.Ensure;
+
+namespace MGK.Acceptance;
 
 /// <summary>
 /// Ensures that values or objects complies with what is expected.
@@ -15,91 +17,128 @@ public static partial class Ensure
 		/// </summary>
 		/// <param name="value">The parameter value.</param>
 		/// <param name="paramName">The parameter's name.</param>
-		public static void IsNotEmpty(Guid value, string paramName)
+		public static Guid IsNotEmpty(Guid value, string paramName)
 			=> IsNotEmpty(value, paramName, AcceptanceResources.AcceptanceMessagesResources.ErrorParamEmpty);
 
-		/// <summary>
-		/// Ensure that a parameter is not empty, otherwise throws an argument exception with a specific message.
-		/// </summary>
-		/// <param name="value">The parameter value.</param>
-		/// <param name="paramName">The parameter's name.</param>
-		/// <param name="errorMessage">The specific error message.</param>
-		public static void IsNotEmpty(Guid value, string paramName, string errorMessage)
-			=> EvaluateParameter(value.IsEmpty(), paramName, errorMessage);
+        /// <summary>
+        /// Ensure that a parameter is not empty, otherwise throws an argument exception with a specific message.
+        /// </summary>
+        /// <param name="value">The parameter value.</param>
+        /// <param name="paramName">The parameter's name.</param>
+        /// <param name="errorMessage">The specific error message.</param>
+        public static Guid IsNotEmpty(Guid value, string paramName, string errorMessage)
+        {
+            EvaluateParameter(value.IsEmpty(), paramName, errorMessage);
+			return value;
+        }
 
-		/// <summary>
-		/// Ensure that a parameter is not null, otherwise throws an argument null exception.
-		/// </summary>
-		/// <param name="value">The parameter value.</param>
-		/// <param name="paramName">The parameter's name.</param>
-		public static void IsNotNull(object value, string paramName)
-			=> IsNotNull(value, paramName, AcceptanceResources.AcceptanceMessagesResources.ErrorParamNull);
+        /// <summary>
+        /// Ensure that a parameter is not null, otherwise throws an argument null exception.
+        /// </summary>
+        /// <param name="value">The parameter value.</param>
+        /// <param name="paramName">The parameter's name.</param>
+        public static object IsNotNullObj(object value, string paramName)
+			=> IsNotNullObj(value, paramName, AcceptanceResources.AcceptanceMessagesResources.ErrorParamNull);
 
-		/// <summary>
-		/// Ensure that a parameter is not null, otherwise throws an argument null exception with a specific message.
-		/// </summary>
-		/// <param name="value">The parameter value.</param>
-		/// <param name="paramName">The parameter's name.</param>
-		/// <param name="errorMessage">The specific error message.</param>
-		public static void IsNotNull(object value, string paramName, string errorMessage)
-			=> EvaluateParameter(value == null, paramName, errorMessage, ParameterErrorType.Null);
+        /// <summary>
+        /// Ensure that a parameter is not null, otherwise throws an argument null exception with a specific message.
+        /// </summary>
+        /// <param name="value">The parameter value.</param>
+        /// <param name="paramName">The parameter's name.</param>
+        /// <param name="errorMessage">The specific error message.</param>
+        public static object IsNotNullObj(object value, string paramName, string errorMessage)
+        {
+            EvaluateParameter(value is null, paramName, errorMessage, ParameterErrorType.Null);
+			return value;
+        }
 
-		/// <summary>
-		/// Ensure that a parameter is not null nor empty, otherwise throws an argument exception.
-		/// </summary>
-		/// <param name="value">The parameter value.</param>
-		/// <param name="paramName">The parameter's name.</param>
-		public static void IsNotNullNorEmpty(string value, string paramName)
+        /// <summary>
+        /// Ensure that a parameter is not null, otherwise throws an argument null exception.
+        /// </summary>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="value">The parameter value.</param>
+        /// <param name="paramName">The parameter's name.</param>
+        public static TValue IsNotNull<TValue>(TValue value, string paramName)
+            => IsNotNull(value, paramName, AcceptanceResources.AcceptanceMessagesResources.ErrorParamNull);
+
+        /// <summary>
+        /// Ensure that a parameter is not null, otherwise throws an argument null exception with a specific message.
+        /// </summary>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="value">The parameter value.</param>
+        /// <param name="paramName">The parameter's name.</param>
+        /// <param name="errorMessage">The specific error message.</param>
+        public static TValue IsNotNull<TValue>(TValue value, string paramName, string errorMessage)
+        {
+            EvaluateParameter(value is null, paramName, errorMessage, ParameterErrorType.Null);
+            return value;
+        }
+
+        /// <summary>
+        /// Ensure that a parameter is not null nor empty, otherwise throws an argument exception.
+        /// </summary>
+        /// <param name="value">The parameter value.</param>
+        /// <param name="paramName">The parameter's name.</param>
+        public static string IsNotNullNorEmpty(string value, string paramName)
 			=> IsNotNullNorEmpty(value, paramName, AcceptanceResources.AcceptanceMessagesResources.ErrorParamNullNorEmpty);
 
-		/// <summary>
-		/// Ensure that a parameter is not null nor empty, otherwise throws an argument exception with a specific message.
-		/// </summary>
-		/// <param name="value">The parameter value.</param>
-		/// <param name="paramName">The parameter's name.</param>
-		/// <param name="errorMessage">The specific error message.</param>
-		public static void IsNotNullNorEmpty(string value, string paramName, string errorMessage)
-			=> EvaluateParameter(value.IsNullOrEmpty(), paramName, errorMessage);
+        /// <summary>
+        /// Ensure that a parameter is not null nor empty, otherwise throws an argument exception with a specific message.
+        /// </summary>
+        /// <param name="value">The parameter value.</param>
+        /// <param name="paramName">The parameter's name.</param>
+        /// <param name="errorMessage">The specific error message.</param>
+        public static string IsNotNullNorEmpty(string value, string paramName, string errorMessage)
+        {
+            EvaluateParameter(value.IsNullOrEmpty(), paramName, errorMessage, ParameterErrorType.NullOrEmpty);
+			return value;
+        }
 
-		/// <summary>
-		/// Ensure that a parameter is not null nor empty, otherwise throws an argument exception.
-		/// </summary>
-		/// <param name="value">The parameter value.</param>
-		/// <param name="paramName">The parameter's name.</param>
-		public static void IsNotNullNorEmpty<T>(IEnumerable<T> value, string paramName)
+        /// <summary>
+        /// Ensure that a parameter is not null nor empty, otherwise throws an argument exception.
+        /// </summary>
+        /// <param name="value">The parameter value.</param>
+        /// <param name="paramName">The parameter's name.</param>
+        public static IEnumerable<T> IsNotNullNorEmpty<T>(IEnumerable<T> value, string paramName)
 			=> IsNotNullNorEmpty(value, paramName, AcceptanceResources.AcceptanceMessagesResources.ErrorParamNullNorEmpty);
 
-		/// <summary>
-		/// Ensure that a parameter is not null nor empty, otherwise throws an argument exception with a specific message.
-		/// </summary>
-		/// <param name="value">The parameter value.</param>
-		/// <param name="paramName">The parameter's name.</param>
-		/// <param name="errorMessage">The specific error message.</param>
-		public static void IsNotNullNorEmpty<T>(IEnumerable<T> value, string paramName, string errorMessage)
-			=> EvaluateParameter(value.IsNullOrEmpty(), paramName, errorMessage);
+        /// <summary>
+        /// Ensure that a parameter is not null nor empty, otherwise throws an argument exception with a specific message.
+        /// </summary>
+        /// <param name="value">The parameter value.</param>
+        /// <param name="paramName">The parameter's name.</param>
+        /// <param name="errorMessage">The specific error message.</param>
+        public static IEnumerable<T> IsNotNullNorEmpty<T>(IEnumerable<T> value, string paramName, string errorMessage)
+        {
+            EvaluateParameter(value.IsNullOrEmpty(), paramName, errorMessage);
+            return value;
+        }
 
-		/// <summary>
-		/// Ensure that a parameter is not null nor empty nor only white spaces, otherwise throws an argument exception.
-		/// </summary>
-		/// <param name="value">The parameter value.</param>
-		/// <param name="paramName">The parameter's name.</param>
-		public static void IsNotNullNorEmptyNorWhiteSpace(string value, string paramName)
+        /// <summary>
+        /// Ensure that a parameter is not null nor empty nor only white spaces, otherwise throws an argument exception.
+        /// </summary>
+        /// <param name="value">The parameter value.</param>
+        /// <param name="paramName">The parameter's name.</param>
+        public static string IsNotNullNorEmptyNorWhiteSpace(string value, string paramName)
 			=> IsNotNullNorEmptyNorWhiteSpace(value, paramName, AcceptanceResources.AcceptanceMessagesResources.ErrorParamNullNorEmptyNorWhiteSpace);
 
-		/// <summary>
-		/// Ensure that a parameter is not null nor empty nor only white spaces, otherwise throws an argument exception with a specific message.
-		/// </summary>
-		/// <param name="value">The parameter value.</param>
-		/// <param name="paramName">The parameter's name.</param>
-		/// <param name="errorMessage">The specific error message.</param>
-		public static void IsNotNullNorEmptyNorWhiteSpace(string value, string paramName, string errorMessage)
-			=> EvaluateParameter(value.IsNullOrEmptyOrWhiteSpace(), paramName, errorMessage);
+        /// <summary>
+        /// Ensure that a parameter is not null nor empty nor only white spaces, otherwise throws an argument exception with a specific message.
+        /// </summary>
+        /// <param name="value">The parameter value.</param>
+        /// <param name="paramName">The parameter's name.</param>
+        /// <param name="errorMessage">The specific error message.</param>
+        public static string IsNotNullNorEmptyNorWhiteSpace(string value, string paramName, string errorMessage)
+        {
+            EvaluateParameter(value.IsNullOrEmptyOrWhiteSpace(), paramName, errorMessage);
+            return value;
+        }
 
         /// <summary>
         /// A custom validation can be implemented through a simple function that returns a boolean value. If the function returns false it will throw an exception.
         /// </summary>
-		/// <param name="predicate">The function to evaluate.</param>
-		/// <param name="errorMessage">The error message to show in case the function returns false.</param>
+        /// <param name="predicate">The function to evaluate.</param>
+        /// <param name="errorMessage">The error message to show in case the function returns false.</param>
         public static void HasToComplyWith(Func<bool> predicate, string paramName, string errorMessage)
             => HasToComplyWith<ArgumentException>(predicate, paramName, errorMessage);
 
@@ -109,8 +148,8 @@ public static partial class Ensure
         /// <typeparam name="T">The expected exception.</typeparam>
         /// <param name="predicate">The function to evaluate.</param>
         /// <param name="errorMessage">The error message to show in case the function returns false.</param>
-        public static void HasToComplyWith<T>(Func<bool> predicate, string paramName, string errorMessage)
-            where T : ArgumentException
+        public static void HasToComplyWith<TException>(Func<bool> predicate, string paramName, string errorMessage)
+            where TException : ArgumentException
 		{
 			if (predicate is null)
 			{
@@ -125,7 +164,7 @@ public static partial class Ensure
 
 			if (predicate()) return;
 
-			Raise.Error.Parameter<T>(paramName, errorMessage);
+			Raise.Error.Parameter<TException>(paramName, errorMessage);
 		}
 
 		/// <summary>
